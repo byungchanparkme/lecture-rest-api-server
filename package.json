@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "mocha": "^8.2.0",
-    "should": "^13.2.3"
+    "should": "^13.2.3",
+    "supertest": "^5.0.0"
   }
 }
