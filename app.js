@@ -17,8 +17,13 @@ app.get("/users", (req, res) => {
   req.query.limit = req.query.limit || 10
   // limit을 10진수의 숫자로 변경한다.
   const limit = parseInt(req.query.limit, 10)
-  // limit 갯수만큼만 응답한다. 
-  res.json(users.slice(0, limit))
+  // parseInt(문자열)은 NaN을 반환한다.
+  if (Number.isNaN(limit)) {
+    res.status(400).send("Bad Request")
+  } else {
+    // limit 갯수만큼만 응답한다.
+    res.json(users.slice(0, limit))
+  }
 })
 
 // 어플리케이션을 외부에서도 사용할 수 있도록 모듈로 만들어준다.
