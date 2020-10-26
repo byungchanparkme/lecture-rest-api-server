@@ -72,13 +72,51 @@ describe("GET /users/:id", () => {
 // 유저 삭제
 describe("DELETE /users/:id", () => {
   describe("성공", () => {
-    it("204 응답", (done) => {
+    it("유저가 성공적으로 삭제되면 204 응답", (done) => {
       request(app).delete("/users/3").expect(204).end(done)
     })
   })
   describe("실패", () => {
     it("id가 숫자가 아닐경우 400", (done) => {
       request(app).delete("/users/three").expect(400).end(done)
+    })
+  })
+})
+
+// 유저 추가
+describe("POST /users", () => {
+  describe("성공", () => {
+    it("201을 응답, 생성한 유저 객체를 응답", (done) => {
+      request(app)
+        // 요청하는 부분
+        .post("/users")
+        .send({ name: "Daniel" })
+        // 응답하는 부분
+        .expect(201)
+        .end((err, res) => {
+          res.body.should.have.property("name", "Daniel")
+          done()
+        })
+    })
+  })
+  describe("실패", () => {
+    it("name이 없으면 400 응답", (done) => {
+      request(app)
+        // 빈 객체를 요청으로 보내게 되면
+        .post("/users")
+        .send({})
+        // 400 응답
+        .expect(400)
+        .end(done)
+    })
+    it("name이 중복이면 409 응답", (done) => {
+      request(app)
+        // 중복 테스트를 위해 기존에 있는 name 값을 담은 객체를 요청으로 보내게 되면
+        .post("/users")
+        .send({ name: "Alice" })
+        // 409 응답
+        .expect(409)
+        .end(done)
     })
   })
 })
