@@ -2,7 +2,7 @@
 const assert = require("assert")
 const should = require("should")
 const request = require("supertest")
-const app = require("./app")
+const app = require("../../app")
 
 // 유저 목록 조회
 describe("GET /users", () => {
