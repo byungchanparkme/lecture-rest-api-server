@@ -1,8 +1,10 @@
+// 테스팅 코드를 작성하는 파일
 const assert = require("assert")
 const should = require("should")
 const request = require("supertest")
 const app = require("./app")
 
+// 유저 목록 조회
 describe("GET /users", () => {
   // 성공하는 경우와 실패하는 경우를 나눠준다.
   describe("성공", () => {
@@ -39,6 +41,30 @@ describe("GET /users", () => {
         // limit이 숫자가 아니기 때문에 status code는 400이 와야 한다. 그것으로 테스트는 끝난다.
         .expect(400)
         .end(done)
+    })
+  })
+})
+
+// 유저 조회
+describe("GET /users/:id", () => {
+  describe("성공", () => {
+    it("유저 객체를 반환한다", (done) => {
+      request(app)
+        .get("/users/2")
+        .end((err, res) => {
+          if (err) throw err
+          res.body.should.be.an.instanceOf(Object)
+          res.body.should.have.property("id", 2)
+          done()
+        })
+    })
+  })
+  describe("실패", () => {
+    it("id가 숫자가 아닐 경우 400으로 응답한다", (done) => {
+      request(app).get("/users/two").expect(400).end(done)
+    })
+    it("id로 유저를 찾을 수 없을 경우 404로 응답한다", (done) => {
+      request(app).get("/users/6").expect(404).end(done)
     })
   })
 })
