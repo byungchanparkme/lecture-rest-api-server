@@ -68,3 +68,17 @@ describe("GET /users/:id", () => {
     })
   })
 })
+
+// 유저 삭제
+describe("DELETE /users/:id", () => {
+  describe("성공", () => {
+    it("204 응답", (done) => {
+      request(app).delete("/users/3").expect(204).end(done)
+    })
+  })
+  describe("실패", () => {
+    it("id가 숫자가 아닐경우 400", (done) => {
+      request(app).delete("/users/three").expect(400).end(done)
+    })
+  })
+})
