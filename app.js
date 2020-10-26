@@ -1,6 +1,6 @@
 const express = require("express")
 const app = express()
-const users = [
+let users = [
   { id: 1, name: "Alice" },
   { id: 2, name: "Brown" },
   { id: 3, name: "Chris" },
@@ -45,6 +45,17 @@ app.get("/users/:id", (req, res) => {
     // 유저가 존재하면, 유저 데이터를 넣어 응답한다.
     res.json(currentUser)
   }
+})
+
+// 유저를 delete하는 API
+app.delete("/users/:id", (req, res) => {
+  const id = parseInt(req.params.id, 10)
+  if (Number.isNaN(id)) {
+    // id가 숫자가 아닐경우 400
+    return res.status(400).end()
+  }
+  users = users.filter((user) => user.id !== id)
+  res.status(204).end()
 })
 
 // 어플리케이션을 외부에서도 사용할 수 있도록 모듈로 만들어준다.
